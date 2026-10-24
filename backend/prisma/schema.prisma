@@ -2,6 +2,7 @@ generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -26,12 +27,12 @@ model Product {
   old         Int?
   stock       Int
   rating      Int         @default(5)
-  image       String?
-  images      String[]
-  description String?
-  isActive    Boolean     @default(true)
-  featured    Boolean     @default(false)
   createdAt   DateTime    @default(now())
+  isActive    Boolean     @default(true)
+  image       String?
+  description String?
+  featured    Boolean     @default(false)
+  images      String[]
   cartItems   CartItem[]
   orderItems  OrderItem[]
 }
@@ -40,7 +41,6 @@ model Order {
   id            Int         @id @default(autoincrement())
   userId        Int?
   total         Int
-  shippingFee    Float    @default(0)
   status        String      @default("قيد المعالجة")
   paymentMethod String      @default("cod")
   paid          Boolean     @default(false)
@@ -51,8 +51,9 @@ model Order {
   customerName  String?
   governorate   String?
   notes         String?
-  ipAddress String?
   phone         String?
+  ipAddress     String?
+  shippingFee   Float       @default(0)
   user          User?       @relation(fields: [userId], references: [id])
   items         OrderItem[]
 }
